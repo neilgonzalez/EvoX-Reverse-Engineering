@@ -1,0 +1,12 @@
+<rom>
+	<romid>
+		<xmlid>read_mitsum32186f8can</xmlid>
+		<make>Mitsubishi</make>
+		<market></market>
+		<model></model>
+		<submodel>CAN Vehicles</submodel>
+		<year>2006+</year>
+		<flashmethod>mitsucan</flashmethod>			
+		<memmodel>M32186F8</memmodel>
+	</romid>
+</rom>	

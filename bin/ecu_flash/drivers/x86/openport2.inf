@@ -1,0 +1,85 @@
+[Version] 
+Signature="$Windows NT$" 
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318} 
+Provider=%Tactrix% 
+DriverVer=07/29/2008,1.00.0000
+CatalogFile=openport2.cat
+
+[Manufacturer] 
+%Tactrix%=DeviceList,NTx86,NTamd64,NTia64
+
+[DestinationDirs] 
+FakeModemCopyFileSection=12
+DefaultDestDir=12 
+
+[DeviceList.NTx86] 
+%DESCRIPTION_BOOT%=TXBOOT, USB\VID_0403&PID_CC4B 
+%DESCRIPTION_MAIN%=TXMAIN, USB\VID_0403&PID_CC4D 
+%DESCRIPTION_MAIN%=TXMAIN, USB\VID_0403&PID_CC4C&MI_00 
+
+[DeviceList.NTamd64] 
+%DESCRIPTION_BOOT%=TXBOOT, USB\VID_0403&PID_CC4B 
+%DESCRIPTION_MAIN%=TXMAIN, USB\VID_0403&PID_CC4D 
+%DESCRIPTION_MAIN%=TXMAIN, USB\VID_0403&PID_CC4C&MI_00 
+
+[DeviceList.NTia64] 
+%DESCRIPTION_BOOT%=TXBOOT, USB\VID_0403&PID_CC4B 
+%DESCRIPTION_MAIN%=TXMAIN, USB\VID_0403&PID_CC4D 
+%DESCRIPTION_MAIN%=TXMAIN, USB\VID_0403&PID_CC4C&MI_00 
+
+;------------------------------------------------------------------------------
+;  32 bit section for Windows 2000/2003/XP/Vista
+;  64 bit section for AMD64 and Intel EM64T based systems
+;------------------------------------------------------------------------------
+
+[TXBOOT.nt] 
+include=mdmcpq.inf
+CopyFiles=FakeModemCopyFileSection
+AddReg=TXBOOT.nt.AddReg 
+
+[TXBOOT.nt.AddReg] 
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider" 
+
+[TXBOOT.nt.Services] 
+AddService=usbser, 0x00000002, DriverServiceBoot
+
+[DriverServiceBoot] 
+DisplayName=%DESCRIPTION_BOOT% 
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys 
+LoadOrderGroup = Base
+
+[TXMAIN.nt] 
+include=mdmcpq.inf
+CopyFiles=FakeModemCopyFileSection
+AddReg=TXBOOT.nt.AddReg 
+
+[TXMAIN.nt.AddReg] 
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider" 
+
+[TXMAIN.nt.Services] 
+AddService=usbser, 0x00000002, DriverServiceMain
+
+[DriverServiceMain] 
+DisplayName=%DESCRIPTION_MAIN% 
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys 
+LoadOrderGroup = Base
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings] 
+Tactrix="Tactrix Inc."
+DESCRIPTION_BOOT="Tactrix Bootloader" 
+DESCRIPTION_MAIN="Tactrix OpenPort 2.0" 
